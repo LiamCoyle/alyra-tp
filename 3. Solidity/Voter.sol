@@ -44,7 +44,7 @@ contract  Voter is Ownable {
     
     struct Session {
         string name;
-        uint id; //facilite le dev front si on renvoie directement l'id dans la struct. Sinon il devra utiliser l'index du tableau sessions
+        uint id; 
     }
     
     event VoterRegistered(address voterAddress); 
@@ -86,9 +86,7 @@ contract  Voter is Ownable {
      * @param _sessionId id of targeted Session
      */
     function registerVoter(address _addr, uint32 _sessionId) public onlyOwner {
-      
         require(!voters[_sessionId][_addr].isRegistered, "Already registered");
-        
         
         voters[_sessionId][_addr] =Voter(true, false, 0);
         emit VoterRegistered(_addr);
@@ -136,8 +134,7 @@ contract  Voter is Ownable {
     function endRegisteringProposal(uint32 _sessionId) public onlyOwner {
         require(status[_sessionId] == WorkflowStatus.ProposalsRegistrationStarted, "Cannot end Proposal Registration");
         
-        status[_sessionId] =  WorkflowStatus.ProposalsRegistrationEnded;
-        
+        status[_sessionId] =  WorkflowStatus.ProposalsRegistrationEnded; 
         emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationStarted, WorkflowStatus.ProposalsRegistrationEnded);
     }
     
@@ -154,7 +151,6 @@ contract  Voter is Ownable {
         require(status[_sessionId] == WorkflowStatus.ProposalsRegistrationEnded, "Cannot start Voting");
        
         status[_sessionId] =  WorkflowStatus.VotingSessionStarted;
-        
         emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationEnded, WorkflowStatus.VotingSessionStarted);
     }
     
@@ -175,7 +171,7 @@ contract  Voter is Ownable {
         voters[_sessionId][msg.sender].votedProposalId = _idProp;
         voters[_sessionId][msg.sender].hasVoted = true;
         
-        proposals[_sessionId][_idProp].voteCount++; //_idProp correspond à l'index de la prop
+        proposals[_sessionId][_idProp].voteCount++; 
         
         emit Voted (msg.sender, _idProp);
     }
